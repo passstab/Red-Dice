@@ -37,8 +37,8 @@ while playerAmount <4
 	puts 'Please enter the name of player ' + (playerAmount.+1).to_s + ' or press enter to continue.'
 	playerName = gets.chomp
 	if playerName == ''
-		break
 		puts "\e[H\e[2J"
+		break
 	end
 	playerList.push playerName
 	diceAmount[playerName] = 5
@@ -74,7 +74,7 @@ while gameover == false
 			end
 		end
 	end
-	while challenged == false
+	loop do
 		i = (i+1)%playerAmount
 		player = playerList[i]
 		cup = diceListHash[player]
@@ -121,6 +121,9 @@ while gameover == false
 				break
 			end
 			gets = whocares
+		end
+		if challenged == true
+			break
 		end
 	end
 		puts diceListArray.sort
