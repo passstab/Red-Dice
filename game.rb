@@ -43,9 +43,8 @@ while playerAmount <4
 	end
 	playerList.push playerName
 	diceAmount[playerName] = 5
+	playerAmount = (playerList.length)
 end
-puts diceListArray.sort.to_s
-playerAmount = (playerList.length)
 while gameover == false
 	diceListArray = []
 	diceAmount.each do |player, amount|
@@ -53,7 +52,6 @@ while gameover == false
 		diceListHash[player] = rolled
 		diceListArray.concat(rolled)
 	end
-	challenged = false
 	player = playerList[i]
 	firstPlayerNumber = i
 	cup = diceListHash[player]
@@ -132,20 +130,27 @@ while gameover == false
 				puts playir + ' has ' + rol.to_s
 			end
 			finalDice = diceListArray.count(currentValue) 
+			puts 'The last bid is ' + currentAmount.to_s + ' ' + currentValue.to_s + '\'s'
 			puts 'There are ' + finalDice.to_s + ' ' + currentValue.to_s + '\'s'
 			if finalDice >= currentAmount
 				puts player +' has won the challenge.'
 				diceAmount[lastPlayer] = diceAmount[lastPlayer] - 1
-				if diceAmount[lastPlayer] = 0
-					playerAmount = playerAmount - 1
+				if diceAmount[lastPlayer] == 0
+					puts lastPlayer + ' is out'
+					playerList.delete(player)
+					playerAmount = (playerAmount) - 1
 				end
 			else
 				puts player + ' has lost the challenge.'
-				diceAmount[player] = diceAmount[player] - 1
-				if diceAmount[player] = 0
+				diceAmount[player] = (diceAmount[player]) - 1
+				puts diceAmount[player]
+				if diceAmount[player] == 0
+					puts player + ' is out'
+					playerList.delete(player)
 					playerAmount = playerAmount - 1
 				end
 			end
+			challenged = false
 			break
 		end
 	end
