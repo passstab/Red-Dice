@@ -3,13 +3,14 @@ playerList 	= []
 playerName 	= ' '
 playerNumber 	= 0
 playerAmount	= 0
+dicenumber	= 0
 diceListArray 	= []
 diceListHash	= {}
 diceAmount 	= {}
 diceValue 	= 0
 finalDice	= 0
 rolled		= []
-gameover	= false
+game		= true
 challenged 	= false
 value		= 0
 currentValue	= 1
@@ -42,10 +43,12 @@ while playerAmount <4
 		break
 	end
 	playerList.push playerName
-	diceAmount[playerName] = 5
+	puts 'Please enter the number of dice for ' + playerName
+	dicenumber = gets.to_i
+	diceAmount[playerName] = dicenumber
 	playerAmount = (playerList.length)
 end
-while gameover == false
+while game
 	diceListArray = []
 	diceAmount.each do |player, amount|
 		rolled = (roll amount)
@@ -55,6 +58,8 @@ while gameover == false
 	player = playerList[i]
 	firstPlayerNumber = i
 	cup = diceListHash[player]
+	puts 'Round ' + round.to_s + ' start!'
+	round = round+1
 	turn player, cup
 	loop do
 		puts 'Please enter the value of the first bid'
@@ -85,14 +90,12 @@ while gameover == false
 			puts 'The current bid is ' + currentAmount.to_s + ' ' + currentValue.to_s + '\'s'
 			puts 'Please enter the value of your bid or press enter to challenge' 
 			value = gets.to_i
-			puts 'the current value is ' + value.to_s
 			if value > 7
 				puts 'That is too high, please enter a value between ' + currentValue + ' and 6'
 			elsif value >  currentValue
 				puts 'Please enter the amount of dice'
 				amount = gets.to_i
 				if amount >= currentAmount
-					puts 'thank you'
 					currentValue = value
 					currentAmount = amount
 					whocares = gets
@@ -106,7 +109,6 @@ while gameover == false
 				puts 'Please enter the amount of dice'
 				amount = gets.to_i
 				if amount > currentAmount
-					puts 'thank you'
 					currentValue = value
 					currentAmount = amount
 					whocares = gets
@@ -123,18 +125,23 @@ while gameover == false
 			gets = whocares
 		end
 		if challenged == true
+			puts "\e[H\e[2J"
 			puts player + ' has challenged ' + lastPlayer
 			whocares = gets
-			puts "\e[H\e[2J"
 			diceListHash.each do |playir, rol|
 				puts playir + ' has ' + rol.to_s
 			end
 			finalDice = diceListArray.count(currentValue) 
+			if currentValue != 1
+				finalDice = finalDice + diceListArray.count(0)
+			end
 			puts 'The last bid is ' + currentAmount.to_s + ' ' + currentValue.to_s + '\'s'
 			puts 'There are ' + finalDice.to_s + ' ' + currentValue.to_s + '\'s'
-			if finalDice >= currentAmount
+			puts 'finalDice is ' + finalDice.to_s + 'currentAmount is' + currentAmount.to_s
+			if finalDice < currentAmount
 				puts player +' has won the challenge.'
 				diceAmount[lastPlayer] = diceAmount[lastPlayer] - 1
+				i = (i - 1)%playerAmount
 				if diceAmount[lastPlayer] == 0
 					puts lastPlayer + ' is out'
 					playerList.delete(player)
@@ -148,15 +155,15 @@ while gameover == false
 					puts player + ' is out'
 					playerList.delete(player)
 					playerAmount = playerAmount - 1
+					i = i%playerAmount
 				end
+			end
+			if playerAmount == 1
+				puts playerList.to_s + ' has won.'
+				game = false
 			end
 			challenged = false
 			break
 		end
 	end
 end
-
-diceListHash.each do |player, rol|
-	puts player + ' has ' + rol.to_s
-end
-puts diceListArray.join(', ')
