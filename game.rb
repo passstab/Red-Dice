@@ -133,7 +133,7 @@ while game
 			end
 			finalDice = diceListArray.count(currentValue) 
 			if currentValue != 1
-				finalDice = finalDice + diceListArray.count(0)
+				finalDice = finalDice + diceListArray.count(1)
 			end
 			puts 'The last bid is ' + currentAmount.to_s + ' ' + currentValue.to_s + '\'s'
 			puts 'There are ' + finalDice.to_s + ' ' + currentValue.to_s + '\'s'
